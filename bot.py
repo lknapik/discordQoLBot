@@ -35,17 +35,19 @@ async def on_message(message):
         await vc.disconnect()
 
     elif("https://ifunny.co/" in message.content):
-        if("picture" in message.content):
+        ifunnyLink = message.content.split(" ")[-1]
 
-            html = requests.get(message.content, headers={'User-Agent': 'Mozilla/5.0'})
+        if("picture" in ifunnyLink):
+
+            html = requests.get(ifunnyLink, headers={'User-Agent': 'Mozilla/5.0'})
             bs = BeautifulSoup(html.text, "html5lib")
             images = bs.find_all('img', {'data-src': re.compile(r'img.ifunny.co')})
 
             await message.channel.send(images[0].attrs['data-src'])
 
-        elif("video" in message.content):
-            html = requests.get(message.content, headers={'User-Agent': 'Mozilla/5.0'})
-            bs = BeautifulSoup(html.text, "html5lib")
+        elif("video" in ifunnyLink):
+            html = requests.get(ifunnyLink, headers={'User-Agent': 'Mozilla/5.0'})
+            bs = BeautifulSoup(html.text, "html.parser")
 
             videos = bs.find_all('video', {'data-src': re.compile(r'img.ifunny.co')})
 
